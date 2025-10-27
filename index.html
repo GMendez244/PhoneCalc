@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Mobile Cost Calculator</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <script src="phones.js"></script>
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <h1>Form for calculating Mobile Prices</h1>
+        <form>
+            <div class="phone">
+                <div class="phone-header">
+                    <select id="phones" name="phones"></select>
+                </div>
+                <div class="phone-body">
+                    <p>Estimated monthly price:</p>
+                    <p class="price" id="main-price"><span>53.00</span></p>
+                    <p>Estimated discount ($):</p>
+                    <input type="number" value="0.00" min="0" max="1300" step="50" id="discount">
+                    <p>Unlimited Line Option:</p>
+                    <select id="unlimited-line-options" name="unlimited-line-options">
+                        <option value="0">Premium Unlimited</option>
+                        <option value="1">Unlimited</option>
+                    </select>
+                </div>
+                <div class="phone-footer">
+                    <label for="xmc">Xfinity Mobile Care:</label>
+                    <input type="checkbox" id="xmc">
+                    <hr>
+                    <label for="free-line">Free Unlimited line:</label>
+                    <input type="checkbox" id="free-line">
+                </div>
+                    <button type="reset" id="add-phone">Add to Cart</button>
+            </div>
+        </form>
+        <hr>
+        <div id="phones-deck" class="phones-deck">
+        </div>
+
+    </body>
+</html>
