@@ -4,9 +4,12 @@ let discountInput = null;
 let unlimitedLineSelect = null;
 let hasXMCButton = null;
 let hasUnlimitedLineCB = null;
+let totalCostParagraph = null;
 
 
-let DISCOUNTINPUTMAX = 1300;
+const PHONEPAYMENTTERM = 36;
+
+let DISCOUNTINPUTMAX = 830;
 let DISCOUNTINPUTMIN = 0;
 
 
@@ -100,10 +103,15 @@ function CreatePhoneCard(phoneName, phoneCost){
 
 
 function CalculatePhoneCost(phone, discount, unlimitedLineCost, hasXMC){
-    let phonePrice = Math.floor((phone.Price / 24) * 100) / 100;
+    
+    let phonePrice = Math.floor((phone.Price / PHONEPAYMENTTERM) * 100) / 100;
     let xmcPrice = phone[phoneParams.XMCPrice];
-    let monthlyDiscount = Math.floor((discount / 24) * 100) / 100;
+    let monthlyDiscount = Math.floor((discount / PHONEPAYMENTTERM) * 100) / 100;
 
+
+    if (monthlyDiscount > phonePrice){
+        monthlyDiscount = phonePrice;
+    }
 
     if (QualifiesForFreeLine() && hasUnlimitedLineCB.checked){
 
@@ -224,6 +232,8 @@ function AddPhoneToCart(){
     let phoneCard = CreatePhoneCard(phone.PhoneName, phoneCost);    
     Cart.push({"PhoneName":phone.PhoneName, "Cost":phoneCost, "Card": phoneCard, "Free Line": hasUnlimitedLineCB.checked});
     ResetForm(phones[0]);
+
+
 }
 
 
@@ -238,6 +248,7 @@ function ResetForm(ph){
     discountInput.value = 0.00;
     hasXMCButton.checked = false;
     UpdateParagraphPrice(ph, discountInput.value, hasXMCButton.checked);
+    UpdateTotalPriceCard();
 }
 
 
@@ -251,6 +262,18 @@ function ValidateFreeLineCheckbox(){
     }
 }
 
+function UpdateTotalPriceCard(){
+    let lines = Cart.length;
+    let cost = 0.00;
+    for (const item of Cart){
+        cost += item.Cost;
+    }
+    
+    if (totalCostParagraph !== null){
+        totalCostParagraph.innerHTML = "$" + cost.toFixed(2) + " | " + lines.toString() + " Lines";
+    }
+    return;
+}
 
 function Update(e){    
     console.log("Update Triggered", e.target);
@@ -267,6 +290,7 @@ function Update(e){
 
     UpdateParagraphPrice(phone, discount, hasXMC);
 
+    UpdateTotalPriceCard();
 }
 
 
@@ -298,6 +322,7 @@ function Initialize(){
     hasUnlimitedLineCB = document.getElementById("free-line");
     hasUnlimitedLineCB.addEventListener("change", Update);
 
+    totalCostParagraph = document.getElementById("total-cost");
 }
 
 
